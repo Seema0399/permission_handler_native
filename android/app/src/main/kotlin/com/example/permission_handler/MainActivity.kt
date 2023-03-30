@@ -20,16 +20,53 @@ class MainActivity : FlutterActivity() {
     val PERMISSION_REQUEST_CODE = 123
 
     fun permissionType(permission: String): String {
-        var selectedPermission = ""
+        var permissions = ""
         when (permission) {
-            "camera" -> selectedPermission = Manifest.permission.CAMERA
-            "readExternalStorage" -> selectedPermission = Manifest.permission.READ_EXTERNAL_STORAGE
-            "readContacts" -> selectedPermission = Manifest.permission.READ_CONTACTS
-            "accessFineLocation" -> selectedPermission = Manifest.permission.ACCESS_FINE_LOCATION
-            "recordAudio" -> selectedPermission = Manifest.permission.RECORD_AUDIO
-            "readCalendar" -> selectedPermission = Manifest.permission.READ_CALENDAR
+            "camera" -> permissions = Manifest.permission.CAMERA
+            "readCalendar" -> permissions = Manifest.permission.READ_CALENDAR
+            "writeCalendar" -> permissions = Manifest.permission.WRITE_CALENDAR
+            "readContacts" -> permissions = Manifest.permission.READ_CONTACTS
+            "writeContacts" -> permissions = Manifest.permission.WRITE_CONTACTS
+            "getAccounts" -> permissions = Manifest.permission.GET_ACCOUNTS
+            "accessBackgroundLocation" -> permissions =
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            "accessCoarseLocation" -> permissions = Manifest.permission.ACCESS_COARSE_LOCATION
+            "accessFineLocation" -> permissions = Manifest.permission.ACCESS_FINE_LOCATION
+            "recordAudio" -> permissions = Manifest.permission.RECORD_AUDIO
+            "readPhoneState" -> permissions = Manifest.permission.READ_PHONE_STATE
+            "readPhoneNumbers" -> permissions = Manifest.permission.READ_PHONE_NUMBERS
+            "callPhone" -> permissions = Manifest.permission.CALL_PHONE
+            "readCallLog" -> permissions = Manifest.permission.READ_CALL_LOG
+            "writeCallLog" -> permissions = Manifest.permission.WRITE_CALL_LOG
+            "addVoiceMail" -> permissions = Manifest.permission.ADD_VOICEMAIL
+            "useSIP" -> permissions = Manifest.permission.USE_SIP
+            "bindCallRedirectionService" -> permissions =
+                Manifest.permission.BIND_CALL_REDIRECTION_SERVICE
+            "bodySensors" -> permissions = Manifest.permission.BODY_SENSORS
+            "sendSMS" -> permissions = Manifest.permission.SEND_SMS
+            "receiveSMS" -> permissions = Manifest.permission.RECEIVE_SMS
+            "readSMS" -> permissions = Manifest.permission.READ_SMS
+            "receiveWapPush" -> permissions = Manifest.permission.RECEIVE_WAP_PUSH
+            "receiveMMS" -> permissions = Manifest.permission.RECEIVE_MMS
+            "readExternalStorage" -> permissions = Manifest.permission.READ_EXTERNAL_STORAGE
+            "writeExternalStorage" -> permissions = Manifest.permission.WRITE_EXTERNAL_STORAGE
+            "accessMediaLocation" -> permissions = Manifest.permission.ACCESS_MEDIA_LOCATION
+            "activityRecognition" -> permissions = Manifest.permission.ACTIVITY_RECOGNITION
+            "manageExternalStorage" -> permissions = Manifest.permission.MANAGE_EXTERNAL_STORAGE
+            "systemAlertWindow" -> permissions = Manifest.permission.SYSTEM_ALERT_WINDOW
+            "requestInstallPackages" -> permissions = Manifest.permission.REQUEST_INSTALL_PACKAGES
+            "accessNotificationPolicy" -> permissions =
+                Manifest.permission.ACCESS_NOTIFICATION_POLICY
+            "bluetoothScan" -> permissions = Manifest.permission.BLUETOOTH_SCAN
+            "bluetoothAdvertise" -> permissions = Manifest.permission.BLUETOOTH_ADVERTISE
+            "bluetoothConnect" -> permissions = Manifest.permission.BLUETOOTH_CONNECT
+            "nearbyWifiDevices" -> permissions = Manifest.permission.NEARBY_WIFI_DEVICES
+            "readMediaImages" -> permissions = Manifest.permission.READ_MEDIA_IMAGES
+            "readMediaVideo" -> permissions = Manifest.permission.READ_MEDIA_VIDEO
+            "readMediaAudio" -> permissions = Manifest.permission.READ_MEDIA_AUDIO
+            "scheduleExactAlarm" -> permissions = Manifest.permission.SCHEDULE_EXACT_ALARM
         }
-        return selectedPermission
+        return permissions
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -70,24 +107,21 @@ class MainActivity : FlutterActivity() {
                     Toast.makeText(context, "Permission Granted", Toast.LENGTH_SHORT).show()
                     selectedPermissions.removeAt(i)
                 } else {
-//                    if (grantResults.isNotEmpty() && grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                    if (
-                        ActivityCompat.shouldShowRequestPermissionRationale(this,
-                            permissions[i])
-                    ) {
-                        Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            requestPermissions(selectedPermissions.toTypedArray(),
-                                PERMISSION_REQUEST_CODE)
+                    if (grantResults.isNotEmpty() && grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                                permissions[i])
+                        ) {
+                            Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show()
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                requestPermissions(selectedPermissions.toTypedArray(),
+                                    PERMISSION_REQUEST_CODE)
+                            }
+                        } else {
+                            // Show an explanation to the user
+                            // and request for permissions again
+                            alertDialog()
                         }
-
-                    } else {
-                        // Show an explanation to the user
-                        // and request for permissions again
-                        alertDialog()
                     }
-//                    }
-
                 }
             }
         } else {

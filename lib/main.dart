@@ -52,11 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: () {
                 RequestPermission().addPermission([
-                  Permissions.readCalendar,
+                  Permissions.bodySensors,
                 ]);
               },
               child: const Text(
-                'Get Camera Permission',
+                'Get Permission',
               ),
             ),
             // ElevatedButton(
